@@ -9,23 +9,30 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-import static com.blidormf.main.GamePanel.TILE_SIZE;
+import static com.blidormf.main.GamePanel.*;
 
 public class Player extends Entity {
     GamePanel gamePanel;
     KeyHandler keyHandler;
 
+    public final int screenX, screenY;
+
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
         this. keyHandler = keyHandler;
+
+        // Set the player's position to the center of screen
+        this.screenX = WINDOW_WIDTH / 2 - TILE_SIZE / 2;
+        this.screenY = WINDOW_HEIGHT / 2 - TILE_SIZE / 2;
+
         setDefaultValues();
         getPlayerSprite();
     }
 
     public void setDefaultValues() {
-        this.x = 100;
-        this.y = 100;
-        this.speed = 1;
+        this.worldX = TILE_SIZE * 23;
+        this.worldY = TILE_SIZE * 21;
+        this.speed = 4;
         this.direction = Direction.DOWN;
     }
 
@@ -58,22 +65,22 @@ public class Player extends Entity {
 
             if (keyHandler.isUpPressed()) {
                 this.direction = Direction.UP;
-                this.y -= this.speed;
+                this.worldY -= this.speed;
             }
 
             if (keyHandler.isRightPressed()) {
                 this.direction = Direction.RIGHT;
-                this.x += this.speed;
+                this.worldX += this.speed;
             }
 
             if (keyHandler.isDownPressed()) {
                 this.direction = Direction.DOWN;
-                this.y += this.speed;
+                this.worldY += this.speed;
             }
 
             if (keyHandler.isLeftPressed()) {
                 this.direction = Direction.LEFT;
-                this.x -= this.speed;
+                this.worldX -= this.speed;
             }
 
             // Change the sprite every 10 frames
@@ -131,6 +138,6 @@ public class Player extends Entity {
             };
         }
 
-        g2.drawImage(bufferedImage, this.x, this.y, TILE_SIZE, TILE_SIZE, null);
+        g2.drawImage(bufferedImage, this.screenX, this.screenY, TILE_SIZE, TILE_SIZE, null);
     }
 }
