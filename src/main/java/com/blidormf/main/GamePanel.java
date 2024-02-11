@@ -9,7 +9,7 @@ import java.awt.*;
 public class GamePanel extends JPanel implements Runnable{
     // Screen settings
     private static final int ORIGINAL_TILE_SIZE = 256;
-    private static final double SCALE = 0.5;
+    public static final double SCALE = 0.5;
     public static final int TILE_SIZE = (int) (ORIGINAL_TILE_SIZE * SCALE);
     public static final int NUMBER_OF_ROWS = 6;
     public static final int NUMBER_OF_COLUMNS = 8;
@@ -24,8 +24,9 @@ public class GamePanel extends JPanel implements Runnable{
     public static final int WORLD_HEIGHT = TILE_SIZE * NUMBER_OF_WORLD_ROWS;
 
     private final KeyHandler keyHandler = new KeyHandler();
-    private TileManager tileManager = new TileManager(this);
+    public TileManager tileManager = new TileManager(this);
     private Thread gameThread;
+    public   CollisionChecker collisionChecker = new CollisionChecker(this);
     public Player player = new Player(this, keyHandler);
 
     public GamePanel() {

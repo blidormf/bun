@@ -12,8 +12,8 @@ import static com.blidormf.main.GamePanel.*;
 
 public class TileManager {
     GamePanel gamePanel;
-    Tile[] tiles;
-    int[][] map;
+    public Tile[] tiles;
+    public int[][] map;
 
     public TileManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -29,9 +29,9 @@ public class TileManager {
             tiles[0] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png")),false);
             tiles[1] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/water.png")), true);
             tiles[2] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png")), true);
-            tiles[3] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png")), true);
+            tiles[3] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png")), false);
             tiles[4] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/bush02.png")), true);
-            tiles[5] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png")), true);
+            tiles[5] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png")), false);
         } catch (IOException e) {
             e.printStackTrace();
         }

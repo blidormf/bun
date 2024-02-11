@@ -34,6 +34,8 @@ public class Player extends Entity {
         this.worldY = TILE_SIZE * 21;
         this.speed = 4;
         this.direction = Direction.DOWN;
+        this.collisionOn = false;
+        this.solidArea = new Rectangle(44, 85, 40, 32);
     }
 
     public void getPlayerSprite() {
@@ -65,22 +67,32 @@ public class Player extends Entity {
 
             if (keyHandler.isUpPressed()) {
                 this.direction = Direction.UP;
-                this.worldY -= this.speed;
             }
 
             if (keyHandler.isRightPressed()) {
                 this.direction = Direction.RIGHT;
-                this.worldX += this.speed;
             }
 
             if (keyHandler.isDownPressed()) {
                 this.direction = Direction.DOWN;
-                this.worldY += this.speed;
             }
 
             if (keyHandler.isLeftPressed()) {
                 this.direction = Direction.LEFT;
-                this.worldX -= this.speed;
+            }
+
+            // Check tile collision
+            collisionOn = false;
+            gamePanel.collisionChecker.checkTile(this);
+
+            // If collision is false, player can move.
+            if (!collisionOn) {
+                switch (this.direction) {
+                    case UP -> this.worldY -= this.speed;
+                    case RIGHT -> this.worldX += this.speed;
+                    case DOWN -> this.worldY += this.speed;
+                    case LEFT -> this.worldX -= this.speed;
+                }
             }
 
             // Change the sprite every 10 frames
