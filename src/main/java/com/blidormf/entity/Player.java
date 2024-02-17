@@ -16,6 +16,7 @@ public class Player extends Entity {
     KeyHandler keyHandler;
 
     public final int screenX, screenY;
+    public int numberOfKeys;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
@@ -32,10 +33,13 @@ public class Player extends Entity {
     public void setDefaultValues() {
         this.worldX = TILE_SIZE * 23;
         this.worldY = TILE_SIZE * 21;
-        this.speed = 4;
+        this.speed = 5;
         this.direction = Direction.DOWN;
         this.collisionOn = false;
-        this.solidArea = new Rectangle(44, 85, 40, 32);
+        this.solidArea = new Rectangle(44, 85, 40, 35);
+        this.solidAreaDefaultX = solidArea.x;
+        this.solidAreaDefaultY = solidArea.y;
+        this.numberOfKeys = 0;
     }
 
     public void getPlayerSprite() {
@@ -85,6 +89,10 @@ public class Player extends Entity {
             collisionOn = false;
             gamePanel.collisionChecker.checkTile(this);
 
+            // Check object collision
+            int objIndex = gamePanel.collisionChecker.checkObject(this, true);
+            pickUpObject(objIndex);
+
             // If collision is false, player can move.
             if (!collisionOn) {
                 switch (this.direction) {
@@ -108,6 +116,26 @@ public class Player extends Entity {
             }
         } else {
             this.isMoving = false;
+        }
+    }
+
+    public void pickUpObject(int i) {
+        if (i > -1) {
+            String objectName = gamePanel.objects[i].name;
+
+            switch (objectName) {
+                case "Key" -> {
+                    this.numberOfKeys++;
+                    this.gamePanel.ui.displayNotification("You found a key!");
+                    gamePanel.objects[i] = null;
+                }
+                case "Door" -> {
+                    if (numberOfKeys > 0) {
+                        gamePanel.objects[i] = null;
+                        this.numberOfKeys--;
+                    }
+                }
+            }
         }
     }
 

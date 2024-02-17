@@ -1,9 +1,11 @@
 package com.blidormf.tile;
 
 import com.blidormf.main.GamePanel;
+import com.blidormf.util.ImageScaler;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -32,6 +34,19 @@ public class TileManager {
             tiles[3] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png")), false);
             tiles[4] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/bush02.png")), true);
             tiles[5] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png")), false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setupTile(int index, String imageName, boolean collision) {
+        ImageScaler imageScaler = new ImageScaler();
+
+        try {
+            BufferedImage tileImage = ImageIO.read(getClass().getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
+            tileImage = imageScaler.scaleImage(tileImage, TILE_SIZE, TILE_SIZE);
+
+            this.tiles[index] = new Tile(tileImage, collision);
         } catch (IOException e) {
             e.printStackTrace();
         }

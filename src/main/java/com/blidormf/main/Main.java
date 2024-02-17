@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         // Initialize window
         JFrame window = new JFrame();
-        window.setTitle("Game");
+        window.setTitle("bun.");
         window.setResizable(false);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -18,6 +18,9 @@ public class Main {
         // Show window
         window.setLocationRelativeTo(null);
         window.setVisible(true);
+
+        // Setup game
+        gamePanel.setupGame();
 
         // Start game thread
         gamePanel.startGameThread();

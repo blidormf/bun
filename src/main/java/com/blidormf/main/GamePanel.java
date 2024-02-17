@@ -1,6 +1,7 @@
 package com.blidormf.main;
 
 import com.blidormf.entity.Player;
+import com.blidormf.object.SuperObject;
 import com.blidormf.tile.TileManager;
 
 import javax.swing.*;
@@ -20,14 +21,16 @@ public class GamePanel extends JPanel implements Runnable{
     // World settings
     public static final int NUMBER_OF_WORLD_COLUMNS = 50;
     public static final int NUMBER_OF_WORLD_ROWS = 50;
-    public static final int WORLD_WIDTH = TILE_SIZE * NUMBER_OF_WORLD_COLUMNS;
-    public static final int WORLD_HEIGHT = TILE_SIZE * NUMBER_OF_WORLD_ROWS;
 
+    // System
     private final KeyHandler keyHandler = new KeyHandler();
     public TileManager tileManager = new TileManager(this);
-    private Thread gameThread;
-    public   CollisionChecker collisionChecker = new CollisionChecker(this);
+    public CollisionChecker collisionChecker = new CollisionChecker(this);
+    public AssetSetter assetSetter = new AssetSetter(this);
     public Player player = new Player(this, keyHandler);
+    public SuperObject[] objects = new SuperObject[10];
+    public UI ui = new UI(this);
+    private Thread gameThread;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
@@ -35,6 +38,10 @@ public class GamePanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+    }
+
+    public void setupGame() {
+        assetSetter.setObject();
     }
 
     public void startGameThread() {
@@ -72,8 +79,19 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D) g;
 
+        // Tiles
         tileManager.draw(g2);
+
+        // Objects
+        for (SuperObject object : objects) {
+            if (object != null)
+                object.draw(g2, this);
+        }
+
+        // Player
         player.draw(g2);
+
+        ui.draw(g2);
 
         g2.dispose();   // Dispose of this graphics context and release any system resources it's using
     }
