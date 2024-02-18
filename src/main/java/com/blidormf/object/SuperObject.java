@@ -10,11 +10,11 @@ import static com.blidormf.main.GamePanel.TILE_SIZE;
 public class SuperObject {
     public BufferedImage image;
     public String name;
-    public boolean collision;
+    public boolean collisionOn;
     public int worldX, worldY;
     public Rectangle solidArea;
-    public int solidAreaDefaultX = 0;
-    public int solidAreaDefaultY = 0;
+    public int solidAreaDefaultX;
+    public int solidAreaDefaultY;
 
     public void draw(Graphics2D g2, GamePanel gamePanel) {
         // Convert world coordinates to screen coordinates relative to the player's position

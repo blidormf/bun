@@ -23,16 +23,18 @@ public class GamePanel extends JPanel implements Runnable{
     public static final int NUMBER_OF_WORLD_ROWS = 50;
 
     // System
-    private final KeyHandler keyHandler = new KeyHandler();
-    public TileManager tileManager = new TileManager(this);
-    public CollisionChecker collisionChecker = new CollisionChecker(this);
-    public AssetSetter assetSetter = new AssetSetter(this);
-    public Player player = new Player(this, keyHandler);
-    public SuperObject[] objects = new SuperObject[10];
-    public UI ui = new UI(this);
-    private Thread gameThread;
+    public boolean inTitleState;
+    public final KeyHandler keyHandler = new KeyHandler();
+    public final TileManager tileManager = new TileManager(this);
+    public final CollisionChecker collisionChecker = new CollisionChecker(this);
+    public final AssetSetter assetSetter = new AssetSetter(this);
+    public final Player player = new Player(this, keyHandler);
+    public final SuperObject[] objects = new SuperObject[10];
+    public final UI ui = new UI(this);
+    public Thread gameThread;
 
     public GamePanel() {
+        this.inTitleState = true;
         this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
@@ -79,6 +81,15 @@ public class GamePanel extends JPanel implements Runnable{
 
         Graphics2D g2 = (Graphics2D) g;
 
+        // Draw title screen
+        if (inTitleState) {
+            if (this.keyHandler.isEnterPressed())
+                inTitleState = false;
+
+            ui.drawTitleScreen(g2);
+            return;
+        }
+
         // Tiles
         tileManager.draw(g2);
 
@@ -91,10 +102,9 @@ public class GamePanel extends JPanel implements Runnable{
         // Player
         player.draw(g2);
 
+        // UI
         ui.draw(g2);
 
         g2.dispose();   // Dispose of this graphics context and release any system resources it's using
     }
-
-
 }

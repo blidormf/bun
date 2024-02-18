@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
-    private boolean upPressed, rightPressed, downPressed, leftPressed;
+    private boolean upPressed, rightPressed, downPressed, leftPressed, enterPressed;
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -19,6 +19,7 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_RIGHT -> this.rightPressed = true;
             case KeyEvent.VK_DOWN -> this.downPressed = true;
             case KeyEvent.VK_LEFT -> this.leftPressed = true;
+            case KeyEvent.VK_ENTER -> this.enterPressed = true;
         }
     }
 
@@ -26,11 +27,12 @@ public class KeyHandler implements KeyListener {
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
 
-        switch (code) {   // Uses 'Switch Expressions' feature introduced in Java 12
+        switch (code) {
             case KeyEvent.VK_UP -> this.upPressed = false;
             case KeyEvent.VK_RIGHT -> this.rightPressed = false;
             case KeyEvent.VK_DOWN -> this.downPressed = false;
             case KeyEvent.VK_LEFT -> this.leftPressed = false;
+            case KeyEvent.VK_ENTER -> this.enterPressed = false;
         }
     }
 
@@ -48,5 +50,9 @@ public class KeyHandler implements KeyListener {
 
     public boolean isLeftPressed() {
         return leftPressed;
+    }
+
+    public boolean isEnterPressed() {
+        return enterPressed;
     }
 }

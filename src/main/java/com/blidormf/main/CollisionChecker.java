@@ -83,7 +83,7 @@ public class CollisionChecker {
                 }
 
                 if (entity.solidArea.intersects(gamePanel.objects[i].solidArea)) {
-                    entity.collisionOn = gamePanel.objects[i].collision;
+                    entity.collisionOn = gamePanel.objects[i].collisionOn;
 
                     if (player)
                         index = i;

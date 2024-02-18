@@ -16,7 +16,7 @@ public class Player extends Entity {
     KeyHandler keyHandler;
 
     public final int screenX, screenY;
-    public int numberOfKeys;
+    public int numberOfVeggies;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
@@ -31,15 +31,15 @@ public class Player extends Entity {
     }
 
     public void setDefaultValues() {
-        this.worldX = TILE_SIZE * 23;
-        this.worldY = TILE_SIZE * 21;
-        this.speed = 5;
+        this.worldX = TILE_SIZE * 10;
+        this.worldY = TILE_SIZE * 9;
+        this.speed = 6;
         this.direction = Direction.DOWN;
         this.collisionOn = false;
         this.solidArea = new Rectangle(44, 85, 40, 35);
         this.solidAreaDefaultX = solidArea.x;
         this.solidAreaDefaultY = solidArea.y;
-        this.numberOfKeys = 0;
+        this.numberOfVeggies = 0;
     }
 
     public void getPlayerSprite() {
@@ -93,7 +93,7 @@ public class Player extends Entity {
             int objIndex = gamePanel.collisionChecker.checkObject(this, true);
             pickUpObject(objIndex);
 
-            // If collision is false, player can move.
+            // If collisionOn is false, the player can move.
             if (!collisionOn) {
                 switch (this.direction) {
                     case UP -> this.worldY -= this.speed;
@@ -124,15 +124,17 @@ public class Player extends Entity {
             String objectName = gamePanel.objects[i].name;
 
             switch (objectName) {
-                case "Key" -> {
-                    this.numberOfKeys++;
-                    this.gamePanel.ui.displayNotification("You found a key!");
-                    gamePanel.objects[i] = null;
+                case "Cabbage", "Carrot", "Cucumber" -> {
+                    this.numberOfVeggies++;
+                    this.gamePanel.ui.displayNotification("You found a " + objectName.toLowerCase() + "!");
+                    this.gamePanel.objects[i] = null;
+                    this.gamePanel.ui.addItem(objectName);
                 }
-                case "Door" -> {
-                    if (numberOfKeys > 0) {
-                        gamePanel.objects[i] = null;
-                        this.numberOfKeys--;
+                case "House" -> {
+                    if (this.numberOfVeggies < 3) {
+                        this.gamePanel.ui.displayNotification("You haven't found all the veggies yet!");
+                    } else {
+                        gamePanel.ui.setGameFinished();
                     }
                 }
             }
@@ -140,7 +142,7 @@ public class Player extends Entity {
     }
 
     public void draw(Graphics2D g2) {
-        BufferedImage bufferedImage = null;
+        BufferedImage bufferedImage;
 
         if (this.isMoving) {
             bufferedImage = switch (direction) {
@@ -178,6 +180,7 @@ public class Player extends Entity {
             };
         }
 
-        g2.drawImage(bufferedImage, this.screenX, this.screenY, TILE_SIZE, TILE_SIZE, null);
+        if (!gamePanel.ui.isGameFinished())
+            g2.drawImage(bufferedImage, this.screenX, this.screenY, TILE_SIZE, TILE_SIZE, null);
     }
 }

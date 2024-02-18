@@ -1,11 +1,9 @@
 package com.blidormf.tile;
 
 import com.blidormf.main.GamePanel;
-import com.blidormf.util.ImageScaler;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -13,7 +11,7 @@ import java.util.Scanner;
 import static com.blidormf.main.GamePanel.*;
 
 public class TileManager {
-    GamePanel gamePanel;
+    private final GamePanel gamePanel;
     public Tile[] tiles;
     public int[][] map;
 
@@ -29,24 +27,7 @@ public class TileManager {
     public void getTileImages() {
         try {
             tiles[0] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png")),false);
-            tiles[1] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/water.png")), true);
-            tiles[2] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png")), true);
-            tiles[3] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png")), false);
-            tiles[4] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/bush02.png")), true);
-            tiles[5] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png")), false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setupTile(int index, String imageName, boolean collision) {
-        ImageScaler imageScaler = new ImageScaler();
-
-        try {
-            BufferedImage tileImage = ImageIO.read(getClass().getClass().getResourceAsStream("/tiles/" + imageName + ".png"));
-            tileImage = imageScaler.scaleImage(tileImage, TILE_SIZE, TILE_SIZE);
-
-            this.tiles[index] = new Tile(tileImage, collision);
+            tiles[1] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/bush.png")), true);
         } catch (IOException e) {
             e.printStackTrace();
         }
