@@ -4,7 +4,7 @@ import com.blidormf.main.GamePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
@@ -34,13 +34,24 @@ public class TileManager {
     }
 
     public void loadMap(String mapName) {
-        try (Scanner fileReader = new Scanner(Paths.get("src/main/resources/maps/" + mapName + ".txt"))) {
-            for (int row = 0; row < NUMBER_OF_WORLD_ROWS; row++) {
-                for (int col = 0; col < NUMBER_OF_WORLD_COLUMNS; col++) {
-                    map[row][col] = fileReader.nextInt();
+        try {
+            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+            InputStream inputStream = classloader.getResourceAsStream("maps/" + mapName + ".txt");
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line = bufferedReader.readLine();
+
+            int row = 0;
+
+            while (line != null) {
+                String[] tiles = line.split(" "); // assuming space-separated integers
+                for (int i = 0; i < tiles.length; i++) {
+                    map[row][i] = Integer.parseInt(tiles[i]);
                 }
+                row++;
+                line = bufferedReader.readLine();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

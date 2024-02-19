@@ -1,6 +1,9 @@
 package com.blidormf.main;
 
-import com.blidormf.object.*;
+import com.blidormf.object.Cabbage;
+import com.blidormf.object.Carrot;
+import com.blidormf.object.Cucumber;
+import com.blidormf.object.House;
 
 import static com.blidormf.main.GamePanel.TILE_SIZE;
 

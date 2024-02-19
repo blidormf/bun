@@ -128,7 +128,7 @@ public class Player extends Entity {
                     this.numberOfVeggies++;
                     this.gamePanel.ui.displayNotification("You found a " + objectName.toLowerCase() + "!");
                     this.gamePanel.objects[i] = null;
-                    this.gamePanel.ui.addItem(objectName);
+                    this.gamePanel.ui.addItem(objectName.toLowerCase());
                 }
                 case "House" -> {
                     if (this.numberOfVeggies < 3) {
